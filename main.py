@@ -83,3 +83,38 @@ st.write(
 )
 
 st.divider()
+
+# -------------------------------------------------------------------
+# 섹션 3: 총 관객 수 분포 (히스토그램)
+# -------------------------------------------------------------------
+st.header("3. 총 관객 수 분포")
+
+# Plotly 히스토그램 생성
+fig3 = px.histogram(
+    df,
+    x="total_audi",
+    nbins=20,
+    title="총 관객 수 분포 (히스토그램)",
+    labels={"total_audi": "총 관객 수 (명)", "count": "영화 수"},
+    hover_data=["movieNm"],
+)
+
+fig3.update_traces(
+    hovertemplate="<b>관객 수 구간</b>: %{x}<br><b>영화 수</b>: %{y}편"
+)
+
+st.plotly_chart(fig3, use_container_width=True)
+
+# 주요 데이터 계산 (가장 관객 수가 많은 영화)
+max_movie = df.loc[df["total_audi"].idxmax()]
+max_title = max_movie["movieNm"]
+max_audi = max_movie["total_audi"]
+
+# 그래프 분석 내용 안내 구역
+st.subheader("💡 이 그래프로 알 수 있는 것")
+st.write(
+    f"대부분의 영화가 **하위 관객 수 구간(100만~300만 명 대)**에 밀집되어 있으며, "
+    f"가장 많은 관객을 동원한 영화는 **'{max_title}'** (총 {max_audi:,}명)입니다."
+)
+
+st.divider()
