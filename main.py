@@ -118,3 +118,39 @@ st.write(
 )
 
 st.divider()
+
+# -------------------------------------------------------------------
+# 섹션 4: 개봉일 스크린 수와 총 관객 수의 관계 (산점도)
+# -------------------------------------------------------------------
+st.header("4. 개봉일 스크린 수 vs 총 관객 수")
+
+# Plotly 산점도 생성
+fig4 = px.scatter(
+    df,
+    x="first_scrn",
+    y="total_audi",
+    color="main_genre",
+    hover_name="movieNm",
+    title="개봉일 스크린 수와 총 관객 수의 관계",
+    labels={
+        "first_scrn": "개봉일 스크린 수 (개)",
+        "total_audi": "총 관객 수 (명)",
+        "main_genre": "장르",
+    },
+    hover_data={"first_scrn": ":,d", "total_audi": ":,d"},
+)
+
+# 마우스 오버 시 표시되는 툴팁 설정
+fig4.update_traces(
+    hovertemplate="<b>%{hovertext}</b><br>개봉일 스크린 수: %{x:,}개<br>총 관객 수: %{y:,}명"
+)
+
+st.plotly_chart(fig4, use_container_width=True)
+
+# 그래프 분석 내용 안내 구역
+st.subheader("💡 이 그래프로 알 수 있는 것")
+st.write(
+    "개봉일 스크린 수가 많을수록 대체로 총 관객 수가 증가하는 양의 상관관계를 보이지만, 스크린 수 대비 상대적으로 높은 흥행 실적을 거둔 장르별 대표작들도 함께 파악할 수 있습니다."
+)
+
+st.divider()
