@@ -195,3 +195,46 @@ st.write(
 )
 
 st.divider()
+
+# -------------------------------------------------------------------
+# 섹션 6: 스크린 수, 총 관객 수, 첫 주 관객 수의 관계 (버블 차트)
+# -------------------------------------------------------------------
+st.header("6. 개봉일 스크린 수 vs 총 관객 수 (점 크기: 첫 주 관객 수)")
+
+# Plotly 버블 차트 생성
+fig6 = px.scatter(
+    df,
+    x="first_scrn",
+    y="total_audi",
+    size="first_week_audi",
+    color="main_genre",
+    hover_name="movieNm",
+    size_max=40,
+    title="개봉일 스크린 수, 총 관객 수, 첫 주 관객 수의 관계",
+    labels={
+        "first_scrn": "개봉일 스크린 수 (개)",
+        "total_audi": "총 관객 수 (명)",
+        "first_week_audi": "첫 주 관객 수 (명)",
+        "main_genre": "장르",
+    },
+    hover_data={
+        "first_scrn": ":,d",
+        "total_audi": ":,d",
+        "first_week_audi": ":,d",
+    },
+)
+
+# 마우스 오버 시 툴팁 설정 (첫 주 관객 수 추가)
+fig6.update_traces(
+    hovertemplate="<b>%{hovertext}</b><br>개봉일 스크린 수: %{x:,}개<br>총 관객 수: %{y:,}명<br>첫 주 관객 수: %{marker.size:,}명"
+)
+
+st.plotly_chart(fig6, use_container_width=True)
+
+# 그래프 분석 내용 안내 구역
+st.subheader("💡 이 그래프로 알 수 있는 것")
+st.write(
+    "개봉 첫 주 관객 수(버블 크기)가 큰 영화일수록 최종 총 관객 수와 스크린 수가 모두 높게 형성이 되어, 초반 흥행(초반 집객력)이 최종 박스오피스 성패에 결정적인 영향을 미친다는 것을 시각적으로 확인할 수 있습니다."
+)
+
+st.divider()
