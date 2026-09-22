@@ -154,3 +154,44 @@ st.write(
 )
 
 st.divider()
+
+# -------------------------------------------------------------------
+# 섹션 5: 영화 10편 이상 주요 장르별 총 관객 수 분포 (상자 그림)
+# -------------------------------------------------------------------
+st.header("5. 주요 장르별 총 관객 수 분포 (상자 그림)")
+
+# 영화가 10편 이상인 장르 필터링
+genre_counts_series = df["main_genre"].value_counts()
+top_genres = genre_counts_series[genre_counts_series >= 10].index
+df_filtered = df[df["main_genre"].isin(top_genres)]
+
+# Plotly 상자 그림 생성
+fig5 = px.box(
+    df_filtered,
+    x="main_genre",
+    y="total_audi",
+    color="main_genre",
+    points="outliers",
+    hover_name="movieNm",
+    title="주요 장르별(10편 이상) 총 관객 수 상자 그림",
+    labels={
+        "main_genre": "장르",
+        "total_audi": "총 관객 수 (명)",
+    },
+    hover_data={"total_audi": ":,d"},
+)
+
+# 마우스 오버 시 영화명과 총 관객 수가 보이도록 설정
+fig5.update_traces(
+    hovertemplate="<b>%{hovertext}</b><br>총 관객 수: %{y:,}명"
+)
+
+st.plotly_chart(fig5, use_container_width=True)
+
+# 그래프 분석 내용 안내 구역
+st.subheader("💡 이 그래프로 알 수 있는 것")
+st.write(
+    "주요 장르별 관객 수의 중간값 및 대략적인 편차 범위를 비교할 수 있으며, 일반적인 분포 범위를 벗어나 대흥행을 기록한 장르별 이상치(Outlier) 영화들을 한눈에 확인할 수 있습니다."
+)
+
+st.divider()
